@@ -10,7 +10,8 @@ public class Spaceship : MonoBehaviour
     protected Rigidbody _Rb;
 
     public float _Speed, _MaxVelocity;
-    public int _Lives; 
+    public int _Lives;
+    public Vector3 Direction;
 
     protected float _SqrMaxVelocity;
     protected bool _CanShoot = true;
@@ -30,8 +31,8 @@ public class Spaceship : MonoBehaviour
             }
         Quaternion quat = Quaternion.Euler(0, 90, 90);
         Bullet projectile = Instantiate(_BulletPrefab, _BulletTransform.transform.position, quat);
-        projectile.SetDirection(new Vector3(0, 1, 0));
-        projectile.SetSpeed(13);
+        projectile.SetDirection(Direction);
+        projectile.SetSpeed(10);
         projectile.destroyed += LaserDestroyed;
         _CanShoot = false;
         }

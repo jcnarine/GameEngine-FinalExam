@@ -25,31 +25,47 @@ public class Spawner : MonoBehaviour
 
 	//Text//
 
-	public TextMeshProUGUI WaveText;
-	public TextMeshProUGUI _enemyCountText;
-	public TextMeshProUGUI _waveCountText;
+	public TextMeshProUGUI _TimerText;
+	public TextMeshProUGUI _TotalPoints;
+	public TextMeshProUGUI _Achievement;
 
 
 	//Spawn and Wave Variables 
 
 	public float spawnTimer;
-	public int _Wave = 1;
-	public static int _enemyTotal = 1, _waveTotal = 1;
+	public int _Timer;
+	public static int _enemyTotal;
 	public static int _totalEnemiesDestroyed;
-	private int enemyCount;
+	private int _enemyCount;
 
+	public static int totalPoints;
+
+	public bool _displayFive, _displayTen;
 	//
 	Vector3 _SpawnLocation;
 	public Canvas _Menu;
+
+	[DllImport("ColorSwitch")]
+
+	private static extern float incrementFloatValue(float value, float increment, float max);
+
+	public float increment;
+
+	private float H, S, V;
 
 	// Start is called before the first frame update
 	void Start()
 		{
 
+		_Achievement.gameObject.SetActive(false);
 		_SpawnLocation = transform.position;
 
-		_enemyTotal = 1;
-		_waveTotal = 1;
+		_enemyTotal = 100;
+		_Timer = 90;
+
+		_displayFive = false;
+		_displayTen = false;
+
 		//This helps organize all the values between the two objects and allows for easy customization
 		asteroidInfo._minX = -848;
 		asteroidInfo._maxX = 812;
@@ -61,24 +77,15 @@ public class Spawner : MonoBehaviour
 		asteroidInfo._maxRotation = 3;
 
 		_Menu.enabled = true;
-
-		while (CommandInvoker.commandHistory.Count > CommandInvoker.counter)
-			{
-			CommandInvoker.commandHistory.RemoveAt(CommandInvoker.counter);
-			}
-		CommandInvoker.counter = 0;
-
 		}
 	private void Update()
 		{
 
-		if (_Menu.enabled == true)
-			{
-			_enemyCountText.text = "Enemy Count: " + _enemyTotal;
-			_waveCountText.text = "Total Waves: " + _waveTotal;
-			}
+		checkGameStatus();
 
-		nextWave();
+		_TimerText.text = "Timer:" + _Timer;
+		_TotalPoints.text = "Score:" + totalPoints;
+		_Achievement.color = new Color32(255, 128, 0, 255);
 
 		}
 	public void StartGame()
@@ -86,58 +93,49 @@ public class Spawner : MonoBehaviour
 		_Menu.enabled = false;
 		_Menu.gameObject.SetActive(false);
 		Invoke("SpawnEnemies", spawnTimer);
+		Invoke("decreaseTimer", 1);
 		}
 
 	public void StartTutorial()
 		{
 		SceneManager.LoadScene("Tutorial");
 		}
-	void nextWave()
+
+
+	public void turnoffAchievement() { _Achievement.gameObject.SetActive(false); }
+
+	void checkGameStatus()
 		{
 
-		Debug.Log(_Wave + " " + _waveTotal + "\n");
+		if (_totalEnemiesDestroyed == 5 && _displayFive == false) {
+			_Achievement.text = "ACHIEVEMENT: 5 ENEMIES DESTROYED";
+			_Achievement.gameObject.SetActive(true);
+			_displayFive = true;
+			Invoke("turnoffAchievement", 5.0f);
+			}
 
-		if (_enemyTotal == _totalEnemiesDestroyed)
+		if (_totalEnemiesDestroyed == 10 && _displayTen == false) {
+			_Achievement.text = "ACHIEVEMENT: 10 ENEMIES DESTROYED";
+			_Achievement.gameObject.SetActive(true);
+			_displayFive = true;
+			Invoke("turnoffAchievement", 5.0f);
+			}
+
+		if (_enemyTotal == _totalEnemiesDestroyed || _Timer == 0)
 			{
-			if (_Wave == _waveTotal)
-				{
 				_enemyTotal = 1;
-				_waveTotal = 1;
-				enemyCount = 0;
+				_enemyCount = 0;
 				_totalEnemiesDestroyed = 0;
 				SceneManager.LoadScene("YouWon");
-				}
-			if (_Wave < _waveTotal)
-				{
-				_Wave++;
-				_totalEnemiesDestroyed = 0;
-				enemyCount = 0;
-				WaveText.text = "Wave " + _Wave;
-				SpawnEnemies();
-				}
 			}
 		}
 
-	public void addValue(int i)
-		{
-		switch (i)
-			{
-
-			case (0):
-				ICommand foePlus = new EnemyUp();
-				CommandInvoker.AddCommand(foePlus);
-				break;
-			case (1):
-				ICommand wavePlus = new WavesUp();
-				CommandInvoker.AddCommand(wavePlus);
-				break;
-			}
-		}
-	public void undoAction() { CommandInvoker.UndoCommand(); }
+	public void decreaseTimer() { _Timer--; Invoke("decreaseTimer", 1); }
+	
 	void SpawnEnemies()
 		{
 
-		if (enemyCount < _enemyTotal)
+		if (_enemyCount < _enemyTotal)
 			{
 			if (Random.Range(0, 2) > 0)
 				{
@@ -153,13 +151,13 @@ public class Spawner : MonoBehaviour
 				asteroid.SetDirection(new Vector3(0, -1, 0));
 
 				Invoke("SpawnEnemies", spawnTimer);
-				enemyCount++;
+				_enemyCount++;
 				}
 			else
 				{
 				_SpawnLocation.x = Random.Range(asteroidInfo._minX, asteroidInfo._maxX);
 				Instantiate(_EnemyPrefab, _SpawnLocation, Quaternion.Euler(0f, -90f, 90f));
-				enemyCount++;
+				_enemyCount++;
 				Invoke("SpawnEnemies", spawnTimer);
 				}
 

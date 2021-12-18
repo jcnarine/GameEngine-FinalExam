@@ -374,7 +374,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7799700505256712781}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 6.036645
   m_Height: 2.590066
@@ -392,10 +392,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5055dc8d872b614ab11abeabb281510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _BulletPrefab: {fileID: -2528440153808753113, guid: 629cbb860341f1a4e97241c61329045b, type: 3}
-  _BulletTransform: {fileID: 0}
+  _BulletPrefab: {fileID: 7327917979271327019, guid: c683148dac986404db24bf66526ff0b4, type: 3}
+  _BulletTransform: {fileID: 4102219914523483328}
   _Speed: 0
   _MaxVelocity: 0
   _Lives: 0
+  Direction: {x: 0, y: 0, z: 0}
   bounce: 2
   livesText: {fileID: 0}

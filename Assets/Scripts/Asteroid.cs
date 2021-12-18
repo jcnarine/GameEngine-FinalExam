@@ -66,9 +66,15 @@ public class Asteroid : Projectile
 
 		_Lives--;
 
-		if (_Lives <= 0)
+		if (other.gameObject.CompareTag("PlayerBullet") && _Lives <= 0)
 			{
 			Spawner._totalEnemiesDestroyed++;
+			Spawner.totalPoints += 200;
+			Destroy(this.gameObject);
+			}
+
+		if (_Lives <= 0)
+			{
 			Destroy(this.gameObject);
 			}
 		}

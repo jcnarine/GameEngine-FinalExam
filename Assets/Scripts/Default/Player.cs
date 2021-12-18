@@ -16,6 +16,14 @@ public class Player : Spaceship
 	public static event Action has_Shot;
 
 
+
+	public void Awake()
+		{
+			_Rb = GetComponent<Rigidbody>();
+			 Direction = new Vector3(0, 1, 0);
+			_Rb.constraints = RigidbodyConstraints.FreezePositionY;
+		}
+
 	// Update is called once per frame
 	public void Update()
 		{
@@ -35,15 +43,6 @@ public class Player : Spaceship
 
 	public void FixedUpdate()
 		{
-
-		if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-			{
-			_Rb.AddForce(Vector3.up * _Speed, ForceMode.Impulse);
-			}
-		if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-			{
-			_Rb.AddForce(Vector3.down * _Speed, ForceMode.Impulse);
-			}
 		if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
 			{
 			_Rb.AddForce(Vector3.left * _Speed, ForceMode.Impulse);
@@ -62,7 +61,7 @@ public class Player : Spaceship
 		}
 	public void OnTriggerEnter(Collider other)
 		{
-		if (other.gameObject.tag == "Asteroid"|| other.gameObject.tag == "Enemy")
+		if (other.gameObject.tag == ("Asteroid")|| other.gameObject.tag == ("Enemy")|| other.gameObject.tag == ("EnemyBullet"))
 			{
 			_Lives -= 1;
 			if (_Lives==0) {
@@ -70,7 +69,7 @@ public class Player : Spaceship
 				}
 			livesText.text = "Lives: " + _Lives;
 			}
-		if (other.gameObject.tag == "Boundary" || other.gameObject.tag == "TopBoundary")
+		if (other.gameObject.CompareTag("Boundary") || other.gameObject.CompareTag("TopBoundary"))
 			{
 			_Rb.AddForce(_Rb.velocity * -1 * bounce, ForceMode.Impulse);
 			}

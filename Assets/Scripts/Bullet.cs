@@ -59,6 +59,17 @@ public class Bullet : Projectile
 
 	public void OnTriggerEnter(Collider other)
 		{
+
+		if (this.gameObject.tag == "EnemyBullet" && other.gameObject.CompareTag("Enemy")) 
+			{
+			return;
+			}
+
+		if (this.gameObject.tag == "PlayerBullet" && other.gameObject.CompareTag("Player"))
+			{
+			return;
+			}
+
 		this.destroyed.Invoke();
 		Destroy(this.gameObject);
 		}
