@@ -82,6 +82,7 @@ public class Spawner : MonoBehaviour
 	private void Update()
 		{
 
+
 		checkGameStatus();
 
 		_TimerText.text = "Timer:" + _Timer;
