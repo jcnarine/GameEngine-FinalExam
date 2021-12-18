@@ -10,6 +10,7 @@ public class Player : Spaceship
 
 	public int bounce;
 	public TextMeshProUGUI livesText;
+	public bool Pause;
 
 	//Implement Observer pattern action
 	// Code referenced from Parisa's Lecture 4 Videos: https://drive.google.com/file/d/1mKuH4BzcJgqX2wQFOKWYbX6r7i3cS7mQ/view
@@ -21,6 +22,7 @@ public class Player : Spaceship
 		{
 			_Rb = GetComponent<Rigidbody>();
 			 Direction = new Vector3(0, 1, 0);
+		Pause = false;
 			_Rb.constraints = RigidbodyConstraints.FreezePositionY;
 		}
 
@@ -28,7 +30,17 @@ public class Player : Spaceship
 	public void Update()
 		{
 
-        if (Input.GetKeyDown(KeyCode.Space) && _CanShoot)
+		if (Input.GetKeyDown(KeyCode.P))
+			{
+			if (Pause == true) {
+				Pause = false;
+				Time.timeScale = 1;
+				} else { 
+				Time.timeScale = 0;
+				Pause = true;
+				}
+			}
+		if (Input.GetKeyDown(KeyCode.Space) && _CanShoot)
 			{
 			
 			Shoot();

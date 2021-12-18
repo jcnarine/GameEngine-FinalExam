@@ -1671,10 +1671,14 @@ MonoBehaviour:
   _EnemyPrefab: {fileID: 6079961416672402192, guid: 4cc7ea3e1590176418f2a9804b6071e8, type: 3}
   _TimerText: {fileID: 453667248}
   _TotalPoints: {fileID: 726823067}
-  _Achievement: {fileID: 0}
+  _Achievement: {fileID: 174053147}
+  material: {fileID: 2100000, guid: a35a50e7710287e42aa95a8dda564ae1, type: 2}
   spawnTimer: 1
   _Timer: 0
+  _displayFive: 0
+  _displayTen: 0
   _Menu: {fileID: 1962014094}
+  increment: 0
 --- !u!4 &1704913585
 Transform:
   m_ObjectHideFlags: 0

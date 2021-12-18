@@ -29,6 +29,7 @@ public class Spawner : MonoBehaviour
 	public TextMeshProUGUI _TotalPoints;
 	public TextMeshProUGUI _Achievement;
 
+	public Material material;
 
 	//Spawn and Wave Variables 
 
@@ -104,6 +105,12 @@ public class Spawner : MonoBehaviour
 
 	public void turnoffAchievement() { _Achievement.gameObject.SetActive(false); }
 
+	public void changeColor() {
+
+		Color.RGBToHSV(material.color, out H, out S, out V);
+		material.color = Color.HSVToRGB(incrementFloatValue(H, 0.01f, 1.0f), S, V);
+
+		}
 	void checkGameStatus()
 		{
 
@@ -111,6 +118,7 @@ public class Spawner : MonoBehaviour
 			_Achievement.text = "ACHIEVEMENT: 5 ENEMIES DESTROYED";
 			_Achievement.gameObject.SetActive(true);
 			_displayFive = true;
+			Invoke("changeColor", 0.1f);
 			Invoke("turnoffAchievement", 5.0f);
 			}
 
@@ -118,6 +126,7 @@ public class Spawner : MonoBehaviour
 			_Achievement.text = "ACHIEVEMENT: 10 ENEMIES DESTROYED";
 			_Achievement.gameObject.SetActive(true);
 			_displayFive = true;
+			Invoke("changeColor", 0.1f);
 			Invoke("turnoffAchievement", 5.0f);
 			}
 
